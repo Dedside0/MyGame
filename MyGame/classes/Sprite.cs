@@ -7,13 +7,34 @@ using System.Windows.Forms;
 
 namespace MyGame.classes
 {
-    internal class Sprite: PictureBox
+    public class Sprite: PictureBox
     {
         public int size;
-        public int posX, posY;
+        private int x, y;
+
+
+        public int X
+        {
+            get => x;
+            set
+            {
+                this.Left = value;
+                this.x = value;
+            }
+        }
+        public int Y
+        {
+            get => y;
+            set
+            {
+                this.Top = value;
+                this.y = value;
+            }
+        }
+
         public Sprite(string path, int x,int y, int size)
         {
-            posX = x; posY = y;
+            X = x; Y = y;
             this.size = size;
 
             this.Load(path);
@@ -21,8 +42,17 @@ namespace MyGame.classes
             this.BorderStyle = BorderStyle.None;
             this.Width = size;
             this.Height = size;
-            this.Top = y;
-            this.Left = x;
+            this.MouseClick += Sprite_MouseClick;
+        }
+
+        private void Sprite_MouseClick(object sender, MouseEventArgs e)
+        {
+            var form= this.FindForm() as FormGame;
+            Bullet bullet = new Bullet("data/pictures/wall1.jpg", e.X, e.Y,form.player, 15);
+            
+            form.Controls.Add(bullet);
+            form.Controls.SetChildIndex(bullet, 0);
+            bullet.Move();
         }
     }
 }

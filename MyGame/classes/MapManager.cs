@@ -8,8 +8,9 @@ using System.Drawing;
 
 namespace MyGame.classes
 {
-    internal class MapManager
+    public class MapManager
     {
+        public List<CollisionSprite> CollisionSprites;
         Sprite[,] tiles;
         Form form;
         int tileSize;
@@ -18,6 +19,7 @@ namespace MyGame.classes
 
         public MapManager(Form form)
         {
+            CollisionSprites = new List<CollisionSprite>();
             this.form = form;
             tiles = new Sprite[verticalTiles, horizontalTiles];
             tileSize = Math.Min(form.ClientSize.Width / horizontalTiles, form.ClientSize.Height / verticalTiles);
@@ -40,6 +42,7 @@ namespace MyGame.classes
                     if (i == 0 || i == verticalTiles - 1 || j == 0 || j == horizontalTiles - 1)
                     {
                         tiles[i, j] = new CollisionSprite("data/pictures/wall1.jpg", x, y, tileSize);
+                        CollisionSprites.Add((CollisionSprite)tiles[i, j]);
                     }
                     else
                     {

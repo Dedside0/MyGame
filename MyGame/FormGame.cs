@@ -13,6 +13,8 @@ namespace MyGame
 {
     public partial class FormGame : Form
     {
+
+        public Player player;
         Form formMenu;
         MapManager mapManager;
         public FormGame()
@@ -36,6 +38,10 @@ namespace MyGame
             mapManager.ClearMap();
             mapManager.LoadMap();
             mapManager.ShowMap();
+
+            player = new Player("data/pictures/player1.png", 100, 100, 32);
+            this.Controls.Add(player);
+            this.Controls.SetChildIndex(player, 0);
         }
          
 
@@ -59,6 +65,7 @@ namespace MyGame
             {
                 this.Close();
             }
+            player.Move(e, mapManager);
         }
     }
 }

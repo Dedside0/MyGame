@@ -59,6 +59,9 @@
     <Compile Include="classes\Sprite.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="classes\Bullet.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="FormGame.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,6 +107,12 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="data\pictures\floor1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\pictures\player1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\pictures\player2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="data\pictures\wall1.jpg">

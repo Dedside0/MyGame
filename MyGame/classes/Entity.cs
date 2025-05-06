@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace MyGame.classes
 {
-    internal class Entity : CollisionSprite
+    public class Entity : CollisionSprite
     {
-        public string Name { get; set; }
+        public string NameEntity { get; set; }
 
         public Entity(string path, int x, int y, int size) : base(path, x, y, size)
         {

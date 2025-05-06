@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace MyGame.classes
 {
-    internal class CollisionSprite : Sprite
+    public class CollisionSprite : Sprite
     {
-        public Rectangle Hitbox { get => new Rectangle(posX,posY,size,size); }
+        public Rectangle Hitbox { get => new Rectangle(X,Y,size,size); }
 
         public CollisionSprite(string path, int x, int y, int size) : base(path, x, y, size)
         {
