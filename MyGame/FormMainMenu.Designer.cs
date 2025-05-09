@@ -37,7 +37,7 @@
             this.buttonStart.Name = "buttonStart";
             this.buttonStart.Size = new System.Drawing.Size(425, 173);
             this.buttonStart.TabIndex = 0;
-            this.buttonStart.Text = "button1";
+            this.buttonStart.Text = "Играть";
             this.buttonStart.UseVisualStyleBackColor = true;
             this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
             // 

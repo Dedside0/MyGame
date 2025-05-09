@@ -16,44 +16,41 @@ namespace MyGame
 
         public Player player;
         Form formMenu;
-        MapManager mapManager;
+        public MapManager mapManager;
+
         public FormGame()
         {
             InitializeComponent();
-            this.FormBorderStyle = FormBorderStyle.FixedSingle ; // Убираем рамку
-            this.WindowState = FormWindowState.Maximized; // Открываем на весь экран
-            this.MaximizeBox = false; // Запрещаем разворачивание (на всякий случай)
-            this.MinimizeBox = false; // Запрещаем сворачивание
+            this.FormBorderStyle = FormBorderStyle.FixedSingle ;
+            this.WindowState = FormWindowState.Maximized;
+            this.MaximizeBox = false; 
+            this.MinimizeBox = false; 
         }
         public FormGame(Form form) : this()
         {
             formMenu = form;
-
         }
 
         private void FormGame_Load(object sender, EventArgs e)
         {
             mapManager = new MapManager(this);
+            this.BackColor = Color.Black;
 
             mapManager.ClearMap();
             mapManager.LoadMap();
             mapManager.ShowMap();
+            
 
-            player = new Player("data/pictures/player1.png", 100, 100, 32);
+            player = new Player("data/pictures/player1.png", 100, 100, 64, this);
+            player.Show();
+            player.mapManager = mapManager;
             this.Controls.Add(player);
             this.Controls.SetChildIndex(player, 0);
         }
          
 
-        private void FormGame_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            formMenu.Close();
-        }
-
         private void FormGame_ResizeEnd(object sender, EventArgs e)
         {
-
-            mapManager.UpdateSize();
             mapManager.ClearMap();
             mapManager.LoadMap();
             mapManager.ShowMap();
@@ -65,7 +62,17 @@ namespace MyGame
             {
                 this.Close();
             }
-            player.Move(e, mapManager);
+            player.Move(e);
+        }
+
+        private void FormGame_KeyUp(object sender, KeyEventArgs e)
+        {
+            player.Stop(e);
+        }
+
+        private void FormGame_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            formMenu.Close();
         }
     }
 }

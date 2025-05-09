@@ -7,61 +7,104 @@ using System.Windows.Forms;
 
 namespace MyGame.classes
 {
-    public class Player : Entity
+    public class Player : CollisionSprite
     {
+        Timer timer;
         double health = 100;
         int lvl = 1;
         double xp;
-        int speed = 5;
+        int speed = 1;
         public int Score { get; private set; }
+        public MapManager mapManager;
+
+        bool up, down, left, right;
 
 
-        public Player(string path, int x, int y, int size) : base(path, x, y, size)
+        public Player(string path, int x, int y, int size,FormGame form) : base(path, x, y, size,form)
         {
+            speed = 3;
+            mapManager = form.mapManager;
+
+            timer = new Timer();
+            timer.Interval = 1;
+            timer.Tick += MovementTimer_Tick;
+            timer.Start();
         }
 
-        internal new void Move(System.Windows.Forms.KeyEventArgs e, MapManager mapManager)
+        public new void Move(KeyEventArgs e)
         {
             if (e.KeyCode == Keys.D)
             {
-                this.X += speed;
                 this.Load("data/pictures/player1.png");
-                if (isCollide(mapManager))
-                    this.X -= speed;
+                left = false;
+                right = true;
             }
-            else if (e.KeyCode == Keys.A)
+            if (e.KeyCode == Keys.A)
             {
-                this.X -= speed;
                 this.Load("data/pictures/player2.png");
-
-                if (isCollide(mapManager))
-                    this.X += speed;
+                right = false;
+                left = true;
             }
-            else if (e.KeyCode == Keys.W)
+            if (e.KeyCode == Keys.S)
+            {
+                up = false;
+                down = true;
+            }
+            if (e.KeyCode == Keys.W)
+            {
+                down = false;
+                up = true;
+            }
+
+        }
+
+        public void Stop(KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.D)
+                right = false;
+            if (e.KeyCode == Keys.A)
+                left = false;
+            if (e.KeyCode == Keys.S)
+                down = false;
+            if (e.KeyCode == Keys.W)
+                up = false;
+        }
+
+
+        private void MovementTimer_Tick(object sender, EventArgs e)
+        {
+            if (up)
             {
                 this.Y -= speed;
-
-                if (isCollide(mapManager))
+                if (IsCollide(this, CheckCollide))
                     this.Y += speed;
             }
-            else if (e.KeyCode == Keys.S)
+            if (down)
             {
                 this.Y += speed;
-
-                if (isCollide(mapManager))
+                if (IsCollide(this, CheckCollide))
                     this.Y -= speed;
             }
-        }
-        private bool isCollide(MapManager mapManager)
-        {
-            foreach (var wall in mapManager.CollisionSprites)
+            if (left)
             {
-                if (Hitbox.IntersectsWith(wall.Hitbox))
-                {
-                    return true;
-                }
+                this.X -= speed;
+                if (IsCollide(this, CheckCollide))
+                    this.X += speed;
             }
-            return false;
+            if (right)
+            {
+                this.X += speed;
+                if (IsCollide(this, CheckCollide))
+                    this.X -= speed;
+            }
+            Show();
+        }
+
+        protected override bool CheckCollide(CollisionSprite current, CollisionSprite other)
+        {
+            if (other is Bullet)
+                return false;
+            return base.CheckCollide(current, other);
         }
     }
 }

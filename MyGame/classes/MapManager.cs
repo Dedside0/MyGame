@@ -12,22 +12,16 @@ namespace MyGame.classes
     {
         public List<CollisionSprite> CollisionSprites;
         Sprite[,] tiles;
-        Form form;
+        FormGame form;
         int tileSize;
         int verticalTiles = 12;
         int horizontalTiles = 24;
 
-        public MapManager(Form form)
+        public MapManager(FormGame form)
         {
             CollisionSprites = new List<CollisionSprite>();
             this.form = form;
             tiles = new Sprite[verticalTiles, horizontalTiles];
-            tileSize = Math.Min(form.ClientSize.Width / horizontalTiles, form.ClientSize.Height / verticalTiles);
-
-        }
-
-        public void UpdateSize()
-        {
             tileSize = Math.Min(form.ClientSize.Width / horizontalTiles, form.ClientSize.Height / verticalTiles);
         }
 
@@ -41,12 +35,12 @@ namespace MyGame.classes
                     int y = i * tileSize;
                     if (i == 0 || i == verticalTiles - 1 || j == 0 || j == horizontalTiles - 1)
                     {
-                        tiles[i, j] = new CollisionSprite("data/pictures/wall1.jpg", x, y, tileSize);
+                        tiles[i, j] = new CollisionSprite("data/pictures/wall1.jpg", x, y, tileSize, form);
                         CollisionSprites.Add((CollisionSprite)tiles[i, j]);
                     }
                     else
                     {
-                        tiles[i, j] = new Sprite("data/pictures/floor1.png", x, y, tileSize);
+                        tiles[i, j] = new Sprite("data/pictures/floor1.png", x, y, tileSize,form);
                     }
                 }
             }
@@ -54,18 +48,19 @@ namespace MyGame.classes
 
         public void ClearMap()
         {
-
             foreach (var tile in tiles)
             {
                 form.Controls.Remove(tile);
             }
             tiles = new Sprite[verticalTiles, horizontalTiles];
         }
+
         public void ShowMap()
         {
             foreach (var tile in tiles)
             {
                 form.Controls.Add(tile);
+                tile.Show();
             }
         }
     }

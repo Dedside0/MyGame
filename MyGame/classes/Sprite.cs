@@ -7,35 +7,18 @@ using System.Windows.Forms;
 
 namespace MyGame.classes
 {
-    public class Sprite: PictureBox
+    public class Sprite : PictureBox
     {
-        public int size;
-        private int x, y;
+        protected FormGame form;
+        protected int size;
+        public int X { get; set; }
+        public int Y { get; set; }
 
-
-        public int X
-        {
-            get => x;
-            set
-            {
-                this.Left = value;
-                this.x = value;
-            }
-        }
-        public int Y
-        {
-            get => y;
-            set
-            {
-                this.Top = value;
-                this.y = value;
-            }
-        }
-
-        public Sprite(string path, int x,int y, int size)
+        public Sprite(string path, int x, int y, int size, FormGame form)
         {
             X = x; Y = y;
             this.size = size;
+            this.form = form;
 
             this.Load(path);
             this.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -47,12 +30,22 @@ namespace MyGame.classes
 
         private void Sprite_MouseClick(object sender, MouseEventArgs e)
         {
-            var form= this.FindForm() as FormGame;
-            Bullet bullet = new Bullet("data/pictures/wall1.jpg", e.X, e.Y,form.player, 15);
-            
+            Bullet bullet = new Bullet("data/pictures/wall1.jpg", e.X, e.Y, form.player, 30, form);
+
             form.Controls.Add(bullet);
             form.Controls.SetChildIndex(bullet, 0);
-            bullet.Move();
+            bullet.StartMove(e.X,e.Y);
+        }
+
+        public new virtual void Show()
+        {
+            this.Top = Y;
+            this.Left = X;
+        }
+
+        public virtual void DeleteSprite()
+        {
+            form.Controls.Remove(this);
         }
     }
 }

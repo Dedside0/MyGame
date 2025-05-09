@@ -39,8 +39,8 @@
             this.Text = "Игра";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormGame_FormClosing);
             this.Load += new System.EventHandler(this.FormGame_Load);
-            this.ResizeEnd += new System.EventHandler(this.FormGame_ResizeEnd);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormGame_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FormGame_KeyUp);
             this.ResumeLayout(false);
 
         }

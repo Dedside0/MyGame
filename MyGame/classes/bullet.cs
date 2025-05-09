@@ -9,30 +9,28 @@ using System.Windows.Forms;
 
 namespace MyGame.classes
 {
-    public class Bullet : CollisionSprite
+    public class Bullet : MovingSprite
     {
-        Point start, end;
-        int speed;
-        public Bullet(string path, int x, int y, Player player, int size) : base(path, x, y, size)
+        public Bullet(string path, int x, int y, Player player, int size, FormGame form) : base(path, player.X,player.Y, size, form)
         {
-            end = new Point(x, y);
             X=player.X;
             Y=player.Y;
-            speed = 30;
-
         }
 
-        public new void Move()
+        public override void StartMove(int targetX, int targetY)
         {
-            Timer timer = new Timer();
-            timer.Tick += Timer_Tick;
-            timer.Start();
+            base.StartMove(targetX, targetY);
+        }
+        public override void StopMove()
+        {
+            base.StopMove();
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        protected override bool CheckCollide(CollisionSprite current, CollisionSprite other)
         {
-            X += speed;
-            Y += speed;
+            if(other is Player)
+                return false;
+            return base.CheckCollide(current, other);
         }
     }
 }
