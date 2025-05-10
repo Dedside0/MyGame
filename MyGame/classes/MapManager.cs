@@ -13,12 +13,12 @@ namespace MyGame.classes
     public class MapManager
     {
         public List<CollisionSprite> CollisionSprites;
+        public List<CollisionSprite> KilledSprites;
         Sprite[,] tiles;
 
         FormGame form;
         int tileSize;
-        int horizontalTiles;
-        int verticalTiles;
+        int horizontalTiles, verticalTiles;
 
         public MapManager(FormGame form)
         {
@@ -98,6 +98,22 @@ namespace MyGame.classes
             form.Controls.Add(enemy);
             form.Controls.SetChildIndex(enemy, 0);
             enemy.StartMove(form.player.X, form.player.Y);
+        }
+        public Player SummonPlayer(Random rand)
+        {
+            int x, y;
+            do
+            {
+                x = rand.Next(0, verticalTiles);
+                y = rand.Next(0, horizontalTiles);
+            }
+            while (tiles[y,x] is CollisionSprite);
+            Player player = new Player("data/pictures/player1.png", x*tileSize, y*tileSize, 50, form);
+            player.Show();
+            player.mapManager = this;
+            form.Controls.Add(player);
+            form.Controls.SetChildIndex(player, 0);
+            return player;
         }
     }
 }

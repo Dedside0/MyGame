@@ -12,16 +12,32 @@ namespace MyGame.classes
 {
     internal class Enemy : MovingSprite
     {
-        private double damage = 12;
+        ProgressBar HealthBar;
+        double health;
+        public double Health { get { return health; } set {  HealthBar.Value = (int)value; health = value; } }
+        public double Damage { get; }
         public Enemy(string path, int x, int y, int size, FormGame form) : base(path, x, y, size, form)
         {
+            HealthBar = new ProgressBar();
+            HealthBar.Width =  this.size;
+            HealthBar.Height = this.size/5;
+            Health = 30;
+            HealthBar.Top = Y - size / 3;
+            HealthBar.Left = X;
+            HealthBar.Maximum = (int)Health;
+            form.Controls.Add(HealthBar);
+            form.Controls.SetChildIndex(HealthBar, 0);
             speed = 2;
+            Damage = 5;
         }
 
         protected Point PlayerPosition { get => new Point(form.player.X, form.player.Y); }
 
         protected override void Move()
         {
+
+            HealthBar.Top = Y - size / 3;
+            HealthBar.Left = X;
             double dx = PlayerPosition.X - X;
             double dy = PlayerPosition.Y - Y;
 
@@ -44,12 +60,28 @@ namespace MyGame.classes
 
         protected override bool RuleOfCollide(CollisionSprite current, CollisionSprite other)
         {
-            if(other is Player && other.Hitbox.IntersectsWith(current.Hitbox))
+            if (other is Bullet bullet && other.Hitbox.IntersectsWith(current.Hitbox))
             {
-                DeleteSprite();
-                ((Player)other).Health -= damage;
+                Health -= bullet.Damage;
+                bullet.DeleteSprite(); // важно!
+                return true;
             }
+
             return base.RuleOfCollide(current, other);
+        }
+
+        public override void DeleteSprite()
+        {
+            StopMove(); // остановка таймера или логики
+            form.Controls.Remove(HealthBar);
+            form.Controls.Remove(this); // удаление с формы
+            form.mapManager.CollisionSprites.Remove(this);
+            this.Dispose(); // освобождение ресурсов
+        }
+
+        void TakeDamage(double damage)
+        {
+            Health-=damage;
         }
 
     }

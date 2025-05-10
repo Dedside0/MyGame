@@ -42,13 +42,9 @@ namespace MyGame
             mapManager.ClearMap();
             mapManager.LoadMap();
             mapManager.ShowMap();
-            
 
-            player = new Player("data/pictures/player1.png", 100, 100, 50, this);
-            player.Show();
-            player.mapManager = mapManager;
-            this.Controls.Add(player);
-            this.Controls.SetChildIndex(player, 0);
+
+            player = mapManager.SummonPlayer(rand);
 
             HPBar = new ProgressBar();
             HPBar.Value = (int)player.Health ;

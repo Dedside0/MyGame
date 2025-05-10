@@ -10,13 +10,14 @@ namespace MyGame.classes
     public class Player : CollisionSprite
     {
         Timer timer;
-        private double health = 100;
+        double health = 100;
         public double Health { get { return health; } set { form.HPBar.Value = (int)value; health = value; } }
         int lvl = 1;
         double xp;
         int speed;
         public int Score { get; private set; }
         public MapManager mapManager;
+        public EventHandler EventHandler;
 
         bool up, down, left, right;
 
@@ -101,9 +102,19 @@ namespace MyGame.classes
             Show();
         }
 
+        void UpdateStats()
+        {
+
+        }
+
 
         protected override bool RuleOfCollide(CollisionSprite current, CollisionSprite other)
         {
+            if (other is Enemy && other.Hitbox.IntersectsWith(current.Hitbox))
+            {
+                this.Health -= ((Enemy)other).Damage;
+                other.DeleteSprite();
+            }
             if (other is Bullet)
                 return false;
             return base.RuleOfCollide(current, other);

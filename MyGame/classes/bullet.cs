@@ -12,10 +12,10 @@ namespace MyGame.classes
 {
     public class Bullet : MovingSprite
     {
-
+        public double Damage { get; }
         public Bullet(string path, int x, int y, int size, FormGame form) : base(path, x, y, size, form)
         {
-            form.mapManager.CollisionSprites.Remove(this);
+            Damage = 15;
             speed = 5;
             double dx = targetX - X;
             double dy = targetY - X;
@@ -45,12 +45,8 @@ namespace MyGame.classes
 
         protected override bool RuleOfCollide(CollisionSprite current, CollisionSprite other)
         {
-            if(other is Enemy && other.Hitbox.IntersectsWith(current.Hitbox))
-            {
-                other.DeleteSprite();
-                return true;
-            }
-            if(other is Player)
+
+            if(other is Player || other is Enemy)
                 return false;
             return base.RuleOfCollide(current, other);
         }

@@ -22,6 +22,8 @@ namespace MyGame.classes
             this.form = form;
 
             this.Load(path);
+            this.Top = y;
+            this.Left = x;
             this.SizeMode = PictureBoxSizeMode.StretchImage;
             this.BorderStyle = BorderStyle.None;
             this.Width = size;
