@@ -14,13 +14,29 @@ namespace MyGame.classes
     {
         ProgressBar HealthBar;
         double health;
-        public double Health { get { return health; } set {  HealthBar.Value = (int)value; health = value; } }
+        public double Health
+        {
+            get
+            {
+                return health;
+            }
+            set
+            {
+                if (value <= 0)
+                    form.mapManager.KilledSprites.Add(this);
+                else
+                {
+                    HealthBar.Value = (int)value;
+                    health = value;
+                }
+            }
+        }
         public double Damage { get; }
         public Enemy(string path, int x, int y, int size, FormGame form) : base(path, x, y, size, form)
         {
             HealthBar = new ProgressBar();
-            HealthBar.Width =  this.size;
-            HealthBar.Height = this.size/5;
+            HealthBar.Width = this.size;
+            HealthBar.Height = this.size / 5;
             Health = 30;
             HealthBar.Top = Y - size / 3;
             HealthBar.Left = X;
@@ -55,7 +71,7 @@ namespace MyGame.classes
                 Y -= (int)vy;
             }
             if (X < 0 || Y < 0 || X > form.Width || Y > form.Height)
-                DeleteSprite();
+                form.mapManager.KilledSprites.Add(this);
         }
 
         protected override bool RuleOfCollide(CollisionSprite current, CollisionSprite other)
@@ -63,25 +79,27 @@ namespace MyGame.classes
             if (other is Bullet bullet && other.Hitbox.IntersectsWith(current.Hitbox))
             {
                 Health -= bullet.Damage;
-                bullet.DeleteSprite(); // важно!
+                form.mapManager.KilledSprites.Add(bullet);
                 return true;
             }
+            if (other is Player player && other.Hitbox.IntersectsWith(current.Hitbox))
+            {
+                player.Health -= Damage;
 
+                form.mapManager.KilledSprites.Add(this);
+            }
             return base.RuleOfCollide(current, other);
         }
 
         public override void DeleteSprite()
         {
-            StopMove(); // остановка таймера или логики
             form.Controls.Remove(HealthBar);
-            form.Controls.Remove(this); // удаление с формы
-            form.mapManager.CollisionSprites.Remove(this);
-            this.Dispose(); // освобождение ресурсов
+            base.DeleteSprite();
         }
 
         void TakeDamage(double damage)
         {
-            Health-=damage;
+            Health -= damage;
         }
 
     }

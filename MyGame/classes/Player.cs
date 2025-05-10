@@ -11,7 +11,22 @@ namespace MyGame.classes
     {
         Timer timer;
         double health = 100;
-        public double Health { get { return health; } set { form.HPBar.Value = (int)value; health = value; } }
+        public double Health
+        {
+            get
+            {
+                return health;
+            }
+            set
+            {
+                if(value < 0)
+                {
+                    mapManager.KilledSprites.Add(this);
+                }
+                form.HPBar.Value = (int)value;
+                health = value;
+            }
+        }
         int lvl = 1;
         double xp;
         int speed;
@@ -22,7 +37,7 @@ namespace MyGame.classes
         bool up, down, left, right;
 
 
-        public Player(string path, int x, int y, int size,FormGame form) : base(path, x, y, size,form)
+        public Player(string path, int x, int y, int size, FormGame form) : base(path, x, y, size, form)
         {
             speed = 5;
             mapManager = form.mapManager;
@@ -78,7 +93,7 @@ namespace MyGame.classes
             if (up)
             {
                 this.Y -= speed;
-                while(IsCollide(this, RuleOfCollide))
+                while (IsCollide(this, RuleOfCollide))
                     this.Y += 1;
             }
             if (down)
@@ -90,21 +105,16 @@ namespace MyGame.classes
             if (left)
             {
                 this.X -= speed;
-                while(IsCollide(this, RuleOfCollide))
+                while (IsCollide(this, RuleOfCollide))
                     this.X += 1;
             }
             if (right)
             {
                 this.X += speed;
-                while(IsCollide(this, RuleOfCollide))
+                while (IsCollide(this, RuleOfCollide))
                     this.X -= 1;
             }
             Show();
-        }
-
-        void UpdateStats()
-        {
-
         }
 
 

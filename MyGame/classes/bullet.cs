@@ -37,18 +37,19 @@ namespace MyGame.classes
             Y += (int)vy;
             if (IsCollide(this, RuleOfCollide))
             {
-                DeleteSprite();
+                form.mapManager.KilledSprites.Add(this);
             }
             if (X < 0 || Y < 0 || X > form.Width || Y > form.Height)
-                DeleteSprite();
+                form.mapManager.KilledSprites.Add(this);
         }
 
         protected override bool RuleOfCollide(CollisionSprite current, CollisionSprite other)
         {
-
             if(other is Player || other is Enemy)
                 return false;
             return base.RuleOfCollide(current, other);
         }
+
+       
     }
 }

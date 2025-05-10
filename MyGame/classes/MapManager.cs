@@ -22,6 +22,7 @@ namespace MyGame.classes
 
         public MapManager(FormGame form)
         {
+            KilledSprites = new List<CollisionSprite>();
             CollisionSprites = new List<CollisionSprite>();
             this.form = form;
         }
@@ -87,6 +88,8 @@ namespace MyGame.classes
 
         public void SummonEnemy(Random rand)
         {
+            if (CountOfEnemy() > 10)
+                return;
             int x, y;
             do
             {
@@ -114,6 +117,17 @@ namespace MyGame.classes
             form.Controls.Add(player);
             form.Controls.SetChildIndex(player, 0);
             return player;
+        }
+
+        int CountOfEnemy()
+        {
+            int cnt = 0;
+            foreach (var sprite in form.mapManager.CollisionSprites)
+            {
+                if (sprite is Enemy)
+                    cnt++;
+            }
+            return cnt;
         }
     }
 }

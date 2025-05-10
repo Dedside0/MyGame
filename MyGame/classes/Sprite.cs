@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,19 @@ namespace MyGame.classes
 {
     public class Sprite : PictureBox
     {
+        Stopwatch reloadTimer = new Stopwatch();
+        bool isReload
+        {
+            get
+            {
+                if(reloadTimer.ElapsedMilliseconds >= 500)
+                {
+                    reloadTimer.Restart();
+                    return true;
+                }
+                return false;
+            }
+        }
         protected FormGame form;
         protected int size;
         public int X { get; set; }
@@ -17,6 +31,8 @@ namespace MyGame.classes
 
         public Sprite(string path, int x, int y, int size, FormGame form)
         {
+            reloadTimer = new Stopwatch();
+            reloadTimer.Start();
             X = x; Y = y;
             this.size = size;
             this.form = form;
@@ -33,12 +49,16 @@ namespace MyGame.classes
 
         private void Sprite_MouseClick(object sender, MouseEventArgs e)
         {
-            Point mouse = form.PointToClient(Cursor.Position);
-            Bullet bullet = new Bullet("data/pictures/wall1.jpg", form.player.X,form.player.Y, 30, form);
+            if (isReload)
+            {
 
-            form.Controls.Add(bullet);
-            form.Controls.SetChildIndex(bullet, 0);
-            bullet.StartMove(mouse.X,mouse.Y);
+                Point mouse = form.PointToClient(Cursor.Position);
+                Bullet bullet = new Bullet("data/pictures/wall1.jpg", form.player.X, form.player.Y, 30, form);
+
+                form.Controls.Add(bullet);
+                form.Controls.SetChildIndex(bullet, 0);
+                bullet.StartMove(mouse.X, mouse.Y);
+            }
         }
 
         public new virtual void Show()
@@ -51,6 +71,17 @@ namespace MyGame.classes
         {
             form.Controls.Remove(this);
             this.Dispose();
+        }
+
+        int CountOfBullets()
+        {
+            int cnt = 0;
+            foreach (var sprite in form.mapManager.CollisionSprites)
+            {
+                if (sprite is Bullet)
+                    cnt++;
+            }
+            return cnt;
         }
     }
 }

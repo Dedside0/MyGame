@@ -25,6 +25,10 @@ namespace MyGame.classes
                 if (iscollided(current, collisionSprite))
                     return true;
             }
+            foreach (CollisionSprite sprite in form.mapManager.KilledSprites)
+            {
+                sprite.DeleteSprite();
+            }
             return false;
         }
 
