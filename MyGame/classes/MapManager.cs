@@ -13,18 +13,17 @@ namespace MyGame.classes
     public class MapManager
     {
         public List<CollisionSprite> CollisionSprites;
-        List<List<Sprite>> tiles;
-        
+        Sprite[,] tiles;
+
         FormGame form;
         int tileSize;
-        int verticalTiles;
         int horizontalTiles;
+        int verticalTiles;
 
         public MapManager(FormGame form)
         {
             CollisionSprites = new List<CollisionSprite>();
             this.form = form;
-            tiles = new List<List<Sprite>>();
         }
 
         public void LoadMap()
@@ -33,76 +32,56 @@ namespace MyGame.classes
             {
                 while (!sr.EndOfStream)
                 {
-                    verticalTiles++;
                     string line = sr.ReadLine();
-                    horizontalTiles = line.Length > horizontalTiles ? line.Length : horizontalTiles;
+                    horizontalTiles++;
+                    verticalTiles = line.Length > verticalTiles ? line.Length : verticalTiles;
                 }
             }
-            tileSize = Math.Min(form.ClientSize.Width / horizontalTiles, form.ClientSize.Height / verticalTiles);
+            tiles = new Sprite[horizontalTiles, verticalTiles];
+            tileSize = Math.Min(form.ClientSize.Width / verticalTiles, form.ClientSize.Height / horizontalTiles);
             using (StreamReader sr = new StreamReader("data/levels/level1.lvl"))
             {
+
                 int i = 0;
                 while (!sr.EndOfStream)
                 {
-                    tiles.Add(new List<Sprite>());
                     string stroka = sr.ReadLine();
-                    for (int j = 0; j < stroka.Length; j++)
+                    for (int j = 0; j < verticalTiles; j++)
                     {
                         int x = j * tileSize;
                         int y = i * tileSize;
-                        if (stroka[j] == '*')
-                            tiles[i].Add(new Sprite("data/pictures/floor1.png", x, y, tileSize, form));
+                        if (j >= stroka.Length || stroka[j] == '*')
+                            tiles[i, j] = (new Sprite("data/pictures/floor1.png", x, y, tileSize, form));
                         else
                         {
-                            tiles[i].Add(new CollisionSprite("data/pictures/wall1.png", x, y, tileSize, form));
-                            CollisionSprites.Add((CollisionSprite)tiles[i][j]);
+                            tiles[i, j] = (new CollisionSprite("data/pictures/wall1.png", x, y, tileSize, form));
+                            CollisionSprites.Add((CollisionSprite)tiles[i, j]);
                         }
 
                     }
                     i++;
                 }
             }
-            //for (int i = 0; i < verticalTiles; i++)
-            //{
-            //    for (int j = 0; j < horizontalTiles; j++)
-            //    {
-            //        int x = j * tileSize;
-            //        int y = i * tileSize;
-            //        if (i == 0 || i == verticalTiles - 1 || j == 0 || j == horizontalTiles - 1)
-            //        {
-            //            tiles[i, j] = new CollisionSprite("data/pictures/wall1.jpg", x, y, tileSize, form);
-            //            CollisionSprites.Add((CollisionSprite)tiles[i, j]);
-            //        }
-            //        else
-            //        {
-            //            tiles[i, j] = new Sprite("data/pictures/floor1.png", x, y, tileSize,form);
-            //        }
-            //    }
-            //}
+
         }
 
         public void ClearMap()
         {
-            foreach (var list in tiles)
+            if (tiles == null)
+                return;
+            foreach (var tile in tiles)
             {
-                foreach (var tile in list)
-                {
-                    form.Controls.Remove(tile);
-
-                }
+                form.Controls.Remove(tile);
             }
-            tiles = new List<List<Sprite>>();
+            tiles = null;
         }
 
         public void ShowMap()
         {
-            foreach (var list in tiles)
+            foreach (var tile in tiles)
             {
-                foreach (var tile in list)
-                {
-                    form.Controls.Add(tile);
-                    tile.Show();
-                }
+                form.Controls.Add(tile);
+                tile.Show();
             }
         }
 
@@ -111,11 +90,11 @@ namespace MyGame.classes
             int x, y;
             do
             {
-                x = rand.Next(0, horizontalTiles + 1);
-                y = rand.Next(0, verticalTiles);
+                x = rand.Next(0, verticalTiles);
+                y = rand.Next(0, horizontalTiles);
             }
-            while (tiles[x][y] is CollisionSprite);
-            Enemy enemy = new Enemy("data/pictures/enemy1.jpg", x*tileSize, y*tileSize, 64, form);
+            while (tiles[y,x] is CollisionSprite);
+            Enemy enemy = new Enemy("data/pictures/enemy1.jpg", x * tileSize, y * tileSize, 64, form);
             form.Controls.Add(enemy);
             form.Controls.SetChildIndex(enemy, 0);
             enemy.StartMove(form.player.X, form.player.Y);

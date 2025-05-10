@@ -35,7 +35,7 @@
             // timerEnemySpawn
             // 
             this.timerEnemySpawn.Enabled = true;
-            this.timerEnemySpawn.Interval = 4000;
+            this.timerEnemySpawn.Interval = 1000;
             this.timerEnemySpawn.Tick += new System.EventHandler(this.timerEnemySpawn_Tick);
             // 
             // FormGame
