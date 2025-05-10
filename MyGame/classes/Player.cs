@@ -11,7 +11,7 @@ namespace MyGame.classes
     {
         Timer timer;
         private double health = 100;
-        public double Health { get { return health; } set { form.HPLabel.Text = value.ToString(); health = value; } }
+        public double Health { get { return health; } set { form.HPBar.Value = (int)value; health = value; } }
         int lvl = 1;
         double xp;
         int speed;

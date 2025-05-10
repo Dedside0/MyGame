@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.IO;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace MyGame.classes
 {
@@ -13,6 +14,7 @@ namespace MyGame.classes
     {
         public List<CollisionSprite> CollisionSprites;
         List<List<Sprite>> tiles;
+        
         FormGame form;
         int tileSize;
         int verticalTiles;
@@ -102,6 +104,21 @@ namespace MyGame.classes
                     tile.Show();
                 }
             }
+        }
+
+        public void SummonEnemy(Random rand)
+        {
+            int x, y;
+            do
+            {
+                x = rand.Next(0, horizontalTiles + 1);
+                y = rand.Next(0, verticalTiles);
+            }
+            while (tiles[x][y] is CollisionSprite);
+            Enemy enemy = new Enemy("data/pictures/enemy1.jpg", x*tileSize, y*tileSize, 64, form);
+            form.Controls.Add(enemy);
+            form.Controls.SetChildIndex(enemy, 0);
+            enemy.StartMove(form.player.X, form.player.Y);
         }
     }
 }

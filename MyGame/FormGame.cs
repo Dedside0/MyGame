@@ -17,7 +17,7 @@ namespace MyGame
         public Player player;
         Form formMenu;
         public MapManager mapManager;
-        public Label HPLabel;
+        public ProgressBar HPBar;
         Random rand;
 
         public FormGame()
@@ -50,18 +50,15 @@ namespace MyGame
             this.Controls.Add(player);
             this.Controls.SetChildIndex(player, 0);
 
-            HPLabel = new Label();
-            HPLabel.Size = new Size(200, 60);
-            //HPLabel.Font = new Font(Font, FontStyle.Bold);
-            HPLabel.Font = new Font("Arial", 50);
-            HPLabel.TextAlign = ContentAlignment.MiddleCenter;
-            HPLabel.BackColor = Color.White;
-            HPLabel.Left = this.Width/2 - HPLabel.Width/2;
-            HPLabel.Top = this.Height - 2*HPLabel.Height;
-            HPLabel.Text = player.Health.ToString();
-            this.Controls.Add(HPLabel);
+            HPBar = new ProgressBar();
+            HPBar.Value = (int)player.Health ;
+            HPBar.Size = new Size(200, 60);
+            HPBar.BackColor = Color.White;
+            HPBar.Left = this.Width/2 - HPBar.Width/2;
+            HPBar.Top = this.Height - 2*HPBar.Height;
+            this.Controls.Add(HPBar);
 
-            this.Controls.SetChildIndex(HPLabel, 0);
+            this.Controls.SetChildIndex(HPBar, 0);
 
         }
          
@@ -94,17 +91,8 @@ namespace MyGame
 
         private void timerEnemySpawn_Tick(object sender, EventArgs e)
         {
-            SummonEnemy();
+            mapManager.SummonEnemy(rand);
         }
 
-        public void SummonEnemy()
-        {
-            int x = rand.Next(0, this.Width);
-            int y = rand.Next(0, this.Height);
-            Enemy enemy = new Enemy("data/pictures/enemy1.jpg", x, y, 64, this);
-            this.Controls.Add(enemy);
-            this.Controls.SetChildIndex(enemy, 0);
-            enemy.StartMove(player.X, player.Y);
-        }
     }
 }
