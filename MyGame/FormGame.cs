@@ -17,6 +17,8 @@ namespace MyGame
         public Player player;
         Form formMenu;
         public MapManager mapManager;
+        public Label HPLabel;
+        Random rand;
 
         public FormGame()
         {
@@ -33,6 +35,7 @@ namespace MyGame
 
         private void FormGame_Load(object sender, EventArgs e)
         {
+            rand = new Random();
             mapManager = new MapManager(this);
             this.BackColor = Color.Black;
 
@@ -41,11 +44,25 @@ namespace MyGame
             mapManager.ShowMap();
             
 
-            player = new Player("data/pictures/player1.png", 100, 100, 64, this);
+            player = new Player("data/pictures/player1.png", 100, 100, 50, this);
             player.Show();
             player.mapManager = mapManager;
             this.Controls.Add(player);
             this.Controls.SetChildIndex(player, 0);
+
+            HPLabel = new Label();
+            HPLabel.Size = new Size(200, 60);
+            //HPLabel.Font = new Font(Font, FontStyle.Bold);
+            HPLabel.Font = new Font("Arial", 50);
+            HPLabel.TextAlign = ContentAlignment.MiddleCenter;
+            HPLabel.BackColor = Color.White;
+            HPLabel.Left = this.Width/2 - HPLabel.Width/2;
+            HPLabel.Top = this.Height - 2*HPLabel.Height;
+            HPLabel.Text = player.Health.ToString();
+            this.Controls.Add(HPLabel);
+
+            this.Controls.SetChildIndex(HPLabel, 0);
+
         }
          
 
@@ -73,6 +90,21 @@ namespace MyGame
         private void FormGame_FormClosing(object sender, FormClosingEventArgs e)
         {
             formMenu.Close();
+        }
+
+        private void timerEnemySpawn_Tick(object sender, EventArgs e)
+        {
+            SummonEnemy();
+        }
+
+        public void SummonEnemy()
+        {
+            int x = rand.Next(0, this.Width);
+            int y = rand.Next(0, this.Height);
+            Enemy enemy = new Enemy("data/pictures/enemy1.jpg", x, y, 64, this);
+            this.Controls.Add(enemy);
+            this.Controls.SetChildIndex(enemy, 0);
+            enemy.StartMove(player.X, player.Y);
         }
     }
 }

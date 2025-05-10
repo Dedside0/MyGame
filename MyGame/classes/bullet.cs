@@ -6,31 +6,53 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.AxHost;
 
 namespace MyGame.classes
 {
     public class Bullet : MovingSprite
     {
-        public Bullet(string path, int x, int y, Player player, int size, FormGame form) : base(path, player.X,player.Y, size, form)
+
+        public Bullet(string path, int x, int y, int size, FormGame form) : base(path, x, y, size, form)
         {
-            X=player.X;
-            Y=player.Y;
+            form.mapManager.CollisionSprites.Remove(this);
+            speed = 5;
+            double dx = targetX - X;
+            double dy = targetY - X;
+            double angle = Math.Atan2(dy, dx);
+
+            // Присваиваем значения полям vx и vy
+            this.vx = speed * Math.Cos(angle);
+            this.vy = speed * Math.Sin(angle);
         }
 
-        public override void StartMove(int targetX, int targetY)
-        {
-            base.StartMove(targetX, targetY);
-        }
         public override void StopMove()
         {
             base.StopMove();
         }
 
-        protected override bool CheckCollide(CollisionSprite current, CollisionSprite other)
+        protected override void Move()
         {
+            X += (int)vx;
+            Y += (int)vy;
+            if (IsCollide(this, RuleOfCollide))
+            {
+                DeleteSprite();
+            }
+            if (X < 0 || Y < 0 || X > form.Width || Y > form.Height)
+                DeleteSprite();
+        }
+
+        protected override bool RuleOfCollide(CollisionSprite current, CollisionSprite other)
+        {
+            if(other is Enemy && other.Hitbox.IntersectsWith(current.Hitbox))
+            {
+                other.DeleteSprite();
+                return true;
+            }
             if(other is Player)
                 return false;
-            return base.CheckCollide(current, other);
+            return base.RuleOfCollide(current, other);
         }
     }
 }

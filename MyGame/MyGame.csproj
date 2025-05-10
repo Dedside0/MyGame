@@ -49,6 +49,9 @@
     <Compile Include="classes\CollisionSprite.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="classes\Enemy.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="classes\MapManager.cs" />
     <Compile Include="classes\MovingSprite.cs">
       <SubType>Component</SubType>
@@ -91,7 +94,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="data\levels\level1.lvl" />
+    <None Include="data\levels\level1.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

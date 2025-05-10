@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,11 +31,12 @@ namespace MyGame.classes
 
         private void Sprite_MouseClick(object sender, MouseEventArgs e)
         {
-            Bullet bullet = new Bullet("data/pictures/wall1.jpg", e.X, e.Y, form.player, 30, form);
+            Point mouse = form.PointToClient(Cursor.Position);
+            Bullet bullet = new Bullet("data/pictures/wall1.jpg", form.player.X,form.player.Y, 30, form);
 
             form.Controls.Add(bullet);
             form.Controls.SetChildIndex(bullet, 0);
-            bullet.StartMove(e.X,e.Y);
+            bullet.StartMove(mouse.X,mouse.Y);
         }
 
         public new virtual void Show()
@@ -46,6 +48,7 @@ namespace MyGame.classes
         public virtual void DeleteSprite()
         {
             form.Controls.Remove(this);
+            this.Dispose();
         }
     }
 }

@@ -28,7 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            this.timerEnemySpawn = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
+            // 
+            // timerEnemySpawn
+            // 
+            this.timerEnemySpawn.Enabled = true;
+            this.timerEnemySpawn.Interval = 4000;
+            this.timerEnemySpawn.Tick += new System.EventHandler(this.timerEnemySpawn_Tick);
             // 
             // FormGame
             // 
@@ -46,5 +54,7 @@
         }
 
         #endregion
+
+        private System.Windows.Forms.Timer timerEnemySpawn;
     }
 }

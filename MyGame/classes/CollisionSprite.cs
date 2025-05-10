@@ -28,7 +28,7 @@ namespace MyGame.classes
             return false;
         }
 
-        protected virtual bool CheckCollide(CollisionSprite current, CollisionSprite other)
+        protected virtual bool RuleOfCollide(CollisionSprite current, CollisionSprite other)
         {
             if (current == other)
                 return false;

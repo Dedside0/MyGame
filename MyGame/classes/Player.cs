@@ -10,10 +10,11 @@ namespace MyGame.classes
     public class Player : CollisionSprite
     {
         Timer timer;
-        double health = 100;
+        private double health = 100;
+        public double Health { get { return health; } set { form.HPLabel.Text = value.ToString(); health = value; } }
         int lvl = 1;
         double xp;
-        int speed = 1;
+        int speed;
         public int Score { get; private set; }
         public MapManager mapManager;
 
@@ -22,7 +23,7 @@ namespace MyGame.classes
 
         public Player(string path, int x, int y, int size,FormGame form) : base(path, x, y, size,form)
         {
-            speed = 3;
+            speed = 5;
             mapManager = form.mapManager;
 
             timer = new Timer();
@@ -76,35 +77,36 @@ namespace MyGame.classes
             if (up)
             {
                 this.Y -= speed;
-                if (IsCollide(this, CheckCollide))
-                    this.Y += speed;
+                while(IsCollide(this, RuleOfCollide))
+                    this.Y += 1;
             }
             if (down)
             {
                 this.Y += speed;
-                if (IsCollide(this, CheckCollide))
-                    this.Y -= speed;
+                while (IsCollide(this, RuleOfCollide))
+                    this.Y -= 1;
             }
             if (left)
             {
                 this.X -= speed;
-                if (IsCollide(this, CheckCollide))
-                    this.X += speed;
+                while(IsCollide(this, RuleOfCollide))
+                    this.X += 1;
             }
             if (right)
             {
                 this.X += speed;
-                if (IsCollide(this, CheckCollide))
-                    this.X -= speed;
+                while(IsCollide(this, RuleOfCollide))
+                    this.X -= 1;
             }
             Show();
         }
 
-        protected override bool CheckCollide(CollisionSprite current, CollisionSprite other)
+
+        protected override bool RuleOfCollide(CollisionSprite current, CollisionSprite other)
         {
             if (other is Bullet)
                 return false;
-            return base.CheckCollide(current, other);
+            return base.RuleOfCollide(current, other);
         }
     }
 }

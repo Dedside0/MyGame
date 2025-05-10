@@ -11,8 +11,10 @@ namespace MyGame.classes
 {
     public class MovingSprite : CollisionSprite
     {
-        protected int vx = 5, vy = 5;
+        protected double speed = 5;
+        protected double vx, vy;
         protected Timer timer;
+        protected int targetX, targetY;
         
 
         public MovingSprite(string path, int x, int y, int size, FormGame form) : base(path, x, y, size, form)
@@ -22,9 +24,12 @@ namespace MyGame.classes
             timer.Tick += MoveTimer_Tick;
         }
 
-        //этот метод вызываем в главном коде
+        
+
         public virtual void StartMove(int targetX, int targetY)
         {
+            this.targetX = targetX;
+            this.targetY = targetY;
             timer.Enabled = true;
         }
         public virtual void StopMove()
@@ -40,20 +45,22 @@ namespace MyGame.classes
 
         protected new virtual void Move()
         {
-            X += vx;
-            Y += vy;
-            if (IsCollide(this, CheckCollide))
+            X += (int)vx;
+            Y += (int)vy;
+            if(IsCollide(this, RuleOfCollide))
             {
-                X -= vx; Y -= vy;
+                X -= (int)vx; Y -= (int)vy;
             }
+            if(X<0 ||  Y<0 || X>form.Width || Y>form.Height)
+                DeleteSprite();
         }
 
         public override void DeleteSprite()
         {
-            timer.Tick -= MoveTimer_Tick;
-            timer.Stop();
-            timer.Dispose();
-            form.Controls.Remove(this);
+            StopMove(); // остановка таймера или логики
+            form.Controls.Remove(this); // удаление с формы
+            form.mapManager.CollisionSprites.Remove(this);
+            this.Dispose(); // освобождение ресурсов
         }
     }
 }
