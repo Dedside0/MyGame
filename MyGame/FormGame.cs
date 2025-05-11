@@ -17,7 +17,6 @@ namespace MyGame
         public Player player;
         Form formMenu;
         public MapManager mapManager;
-        public ProgressBar HPBar;
         Random rand;
 
         public FormGame()
@@ -46,15 +45,6 @@ namespace MyGame
 
             player = mapManager.SummonPlayer(rand);
 
-            HPBar = new ProgressBar();
-            HPBar.Value = (int)player.Health ;
-            HPBar.Size = new Size(200, 60);
-            HPBar.BackColor = Color.White;
-            HPBar.Left = this.Width/2 - HPBar.Width/2;
-            HPBar.Top = this.Height - 2*HPBar.Height;
-            this.Controls.Add(HPBar);
-
-            this.Controls.SetChildIndex(HPBar, 0);
 
         }
          

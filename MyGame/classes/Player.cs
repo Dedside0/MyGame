@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,13 @@ namespace MyGame.classes
     {
         Timer timer;
         double health = 100;
+        public ProgressBar HealthBar;
+        int lvl = 1;
+        double xp;
+        int speed;
+        public int Score { get; private set; }
+        public MapManager mapManager;
+        public EventHandler EventHandler;
         public double Health
         {
             get
@@ -19,26 +27,35 @@ namespace MyGame.classes
             }
             set
             {
-                if(value < 0)
+                if (value <= 0)
                 {
-                    mapManager.KilledSprites.Add(this);
+
+                    HealthBar.Value = 0;
+                    mapManager.GameOver(this);
                 }
-                form.HPBar.Value = (int)value;
-                health = value;
+                else
+                {
+                    HealthBar.Value = (int)value;
+                    health = value;
+                }
             }
         }
-        int lvl = 1;
-        double xp;
-        int speed;
-        public int Score { get; private set; }
-        public MapManager mapManager;
-        public EventHandler EventHandler;
 
         bool up, down, left, right;
 
 
         public Player(string path, int x, int y, int size, FormGame form) : base(path, x, y, size, form)
         {
+
+            HealthBar = new ProgressBar();
+            HealthBar.Value = (int)Health;
+            HealthBar.Size = new Size(200, 60);
+            HealthBar.BackColor = Color.White;
+            HealthBar.Left = form.Width / 2 - HealthBar.Width / 2;
+            HealthBar.Top = form.Height - 2 * HealthBar.Height;
+            form.Controls.Add(HealthBar);
+            form.Controls.SetChildIndex(HealthBar, 0);
+
             speed = 5;
             mapManager = form.mapManager;
 
@@ -120,11 +137,11 @@ namespace MyGame.classes
 
         protected override bool RuleOfCollide(CollisionSprite current, CollisionSprite other)
         {
-            if (other is Enemy && other.Hitbox.IntersectsWith(current.Hitbox))
-            {
-                this.Health -= ((Enemy)other).Damage;
-                other.DeleteSprite();
-            }
+                //if (other is Enemy && other.Hitbox.IntersectsWith(current.Hitbox))
+                //{
+                //    this.Health -= ((Enemy)other).Damage;
+                //    other.DeleteSprite();
+                //}
             if (other is Bullet)
                 return false;
             return base.RuleOfCollide(current, other);

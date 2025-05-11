@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.IO;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
+using System.Diagnostics;
 
 namespace MyGame.classes
 {
@@ -51,11 +52,11 @@ namespace MyGame.classes
                     {
                         int x = j * tileSize;
                         int y = i * tileSize;
-                        if (j >= stroka.Length || stroka[j] == '*')
-                            tiles[i, j] = (new Sprite("data/pictures/floor1.png", x, y, tileSize, form));
+                        if (j >= stroka.Length || stroka[j] == '*' || stroka[j]==' ')
+                            tiles[i, j] = (new Sprite("data/pictures/floor1.jpg", x, y, tileSize, form));
                         else
                         {
-                            tiles[i, j] = (new CollisionSprite("data/pictures/wall1.png", x, y, tileSize, form));
+                            tiles[i, j] = (new CollisionSprite("data/pictures/wall1.jpg", x, y, tileSize, form));
                             CollisionSprites.Add((CollisionSprite)tiles[i, j]);
                         }
 
@@ -88,7 +89,7 @@ namespace MyGame.classes
 
         public void SummonEnemy(Random rand)
         {
-            if (CountOfEnemy() > 10)
+            if (CountOfEnemy() > 7)
                 return;
             int x, y;
             do
@@ -97,11 +98,14 @@ namespace MyGame.classes
                 y = rand.Next(0, horizontalTiles);
             }
             while (tiles[y,x] is CollisionSprite);
-            Enemy enemy = new Enemy("data/pictures/enemy1.jpg", x * tileSize, y * tileSize, 64, form);
-            form.Controls.Add(enemy);
-            form.Controls.SetChildIndex(enemy, 0);
-            enemy.StartMove(form.player.X, form.player.Y);
+            int type = rand.Next(1, 3);
+            Enemy summonSprite = new Enemy(type, x * tileSize, y * tileSize, 45, form);
+            form.Controls.Add(summonSprite);
+            form.Controls.SetChildIndex(summonSprite, 0);
+            summonSprite.StartMove(form.player.X,form.player.Y);
         }
+        
+
         public Player SummonPlayer(Random rand)
         {
             int x, y;
@@ -128,6 +132,11 @@ namespace MyGame.classes
                     cnt++;
             }
             return cnt;
+        }
+
+        public void GameOver(Player player)
+        {
+            player = null;
         }
     }
 }

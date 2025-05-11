@@ -12,6 +12,7 @@ namespace MyGame.classes
 {
     internal class Enemy : MovingSprite
     {
+        bool canFly;
         ProgressBar HealthBar;
         double health;
         public double Health
@@ -44,7 +45,15 @@ namespace MyGame.classes
             form.Controls.Add(HealthBar);
             form.Controls.SetChildIndex(HealthBar, 0);
             speed = 2;
-            Damage = 5;
+            Damage = 20;
+        }
+        public Enemy(int type, int x, int y, int size, FormGame form) : this("data/pictures/enemy" + $"{type}.jpg", x, y, size, form)
+        {
+            switch (type)
+            {
+                case 1: canFly = false; break;
+                case 2: canFly = true; Health = 15; HealthBar.Maximum = (int)Health; break;
+            }
         }
 
         protected Point PlayerPosition { get => new Point(form.player.X, form.player.Y); }
@@ -85,8 +94,12 @@ namespace MyGame.classes
             if (other is Player player && other.Hitbox.IntersectsWith(current.Hitbox))
             {
                 player.Health -= Damage;
-
                 form.mapManager.KilledSprites.Add(this);
+                return true;
+            }
+            if(canFly && !(other is Enemy) && current.Hitbox.IntersectsWith(current.Hitbox))
+            {
+                return false;
             }
             return base.RuleOfCollide(current, other);
         }
