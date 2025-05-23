@@ -27,9 +27,10 @@ namespace MyGame
             this.MaximizeBox = false; 
             this.MinimizeBox = false; 
         }
-        public FormGame(Form form) : this()
+        public FormGame(Form form,string skinId) : this()
         {
             formMenu = form;
+            this.skinId = skinId;
         }
 
         private void FormGame_Load(object sender, EventArgs e)
@@ -43,10 +44,7 @@ namespace MyGame
             mapManager.LoadMap();
             mapManager.ShowMap();
 
-
             player = mapManager.SummonPlayer(skinId);
-
-
         }
          
 

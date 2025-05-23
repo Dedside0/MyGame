@@ -12,6 +12,7 @@ namespace MyGame
 {
     public partial class FormMainMenu : Form
     {
+        string skinId = "1";
         public FormMainMenu()
         {
             InitializeComponent();
@@ -24,7 +25,7 @@ namespace MyGame
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            FormGame formGame = new FormGame(this);
+            FormGame formGame = new FormGame(this,skinId);
             this.Hide();
             formGame.Show();
 
@@ -32,7 +33,9 @@ namespace MyGame
 
         private void buttonSkins_Click(object sender, EventArgs e)
         {
-
+            FormSkin formSkin = new FormSkin();
+            formSkin.ShowDialog();
+            skinId = formSkin.SkinID;
         }
     }
 }

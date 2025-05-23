@@ -50,7 +50,7 @@ namespace MyGame.classes
             if (isReload)
             {
                 Point mouse = form.PointToClient(Cursor.Position);
-                Bullet bullet = new Bullet("data/pictures/wall1.jpg", form.player.X, form.player.Y, 30, form);
+                Bullet bullet = new Bullet("data/pictures/bullet1.jpg", form.player.X, form.player.Y, 30, form);
 
                 form.Controls.Add(bullet);
                 form.Controls.SetChildIndex(bullet, 0);
