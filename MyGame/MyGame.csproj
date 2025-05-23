@@ -77,6 +77,12 @@
     <Compile Include="FormMainMenu.Designer.cs">
       <DependentUpon>FormMainMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormSkin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSkin.Designer.cs">
+      <DependentUpon>FormSkin.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormGame.resx">
@@ -121,10 +127,16 @@
     <Content Include="data\pictures\floor1.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="data\pictures\player1.png">
+    <Content Include="data\pictures\players\player1_1.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="data\pictures\player2.png">
+    <Content Include="data\pictures\players\player1_2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\pictures\players\player2_1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\pictures\players\player2_2.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="data\pictures\summon1.jpg">

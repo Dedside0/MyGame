@@ -20,7 +20,7 @@ namespace MyGame.classes
         public MovingSprite(string path, int x, int y, int size, FormGame form) : base(path, x, y, size, form)
         {
             timer = new Timer();
-            timer.Interval = 10;
+            timer.Interval = 16;
             timer.Tick += MoveTimer_Tick;
         }
 

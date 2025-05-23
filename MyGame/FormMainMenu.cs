@@ -29,5 +29,10 @@ namespace MyGame
             formGame.Show();
 
         }
+
+        private void buttonSkins_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

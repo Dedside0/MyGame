@@ -13,10 +13,10 @@ namespace MyGame
 {
     public partial class FormGame : Form
     {
-
+        string skinId="2";
         public Player player;
-        Form formMenu;
         public MapManager mapManager;
+        Form formMenu;
         Random rand;
 
         public FormGame()
@@ -33,7 +33,8 @@ namespace MyGame
         }
 
         private void FormGame_Load(object sender, EventArgs e)
-        {
+        {   
+            
             rand = new Random();
             mapManager = new MapManager(this);
             this.BackColor = Color.Black;
@@ -43,7 +44,7 @@ namespace MyGame
             mapManager.ShowMap();
 
 
-            player = mapManager.SummonPlayer(rand);
+            player = mapManager.SummonPlayer(skinId);
 
 
         }
@@ -77,7 +78,7 @@ namespace MyGame
 
         private void timerEnemySpawn_Tick(object sender, EventArgs e)
         {
-            mapManager.SummonEnemy(rand);
+            mapManager.SummonEnemy();
         }
 
     }

@@ -17,12 +17,14 @@ namespace MyGame.classes
         public List<CollisionSprite> KilledSprites;
         Sprite[,] tiles;
 
+        Random rand;
         FormGame form;
         int tileSize;
         int horizontalTiles, verticalTiles;
 
         public MapManager(FormGame form)
         {
+            rand = new Random();
             KilledSprites = new List<CollisionSprite>();
             CollisionSprites = new List<CollisionSprite>();
             this.form = form;
@@ -87,7 +89,7 @@ namespace MyGame.classes
             }
         }
 
-        public void SummonEnemy(Random rand)
+        public void SummonEnemy()
         {
             if (CountOfEnemy() > 7)
                 return;
@@ -106,7 +108,7 @@ namespace MyGame.classes
         }
         
 
-        public Player SummonPlayer(Random rand)
+        public Player SummonPlayer(string skinID)
         {
             int x, y;
             do
@@ -115,9 +117,9 @@ namespace MyGame.classes
                 y = rand.Next(0, horizontalTiles);
             }
             while (tiles[y,x] is CollisionSprite);
-            Player player = new Player("data/pictures/player1.png", x*tileSize, y*tileSize, 50, form);
+
+            Player player = new Player(skinID, x*tileSize, y*tileSize, 50, form);
             player.Show();
-            player.mapManager = this;
             form.Controls.Add(player);
             form.Controls.SetChildIndex(player, 0);
             return player;

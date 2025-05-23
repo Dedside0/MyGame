@@ -15,6 +15,7 @@ namespace MyGame.classes
         bool canFly;
         ProgressBar HealthBar;
         double health;
+        int scoreValue = 12;
         public double Health
         {
             get
@@ -24,7 +25,10 @@ namespace MyGame.classes
             set
             {
                 if (value <= 0)
+                {
                     form.mapManager.KilledSprites.Add(this);
+                    form.player.Score += scoreValue;
+                }
                 else
                 {
                     HealthBar.Value = (int)value;
@@ -52,7 +56,7 @@ namespace MyGame.classes
             switch (type)
             {
                 case 1: canFly = false; break;
-                case 2: canFly = true; Health = 15; HealthBar.Maximum = (int)Health; break;
+                case 2: canFly = true; Health = 15; HealthBar.Maximum = (int)Health; speed = 8; scoreValue = 6; break;
             }
         }
 
@@ -110,10 +114,6 @@ namespace MyGame.classes
             base.DeleteSprite();
         }
 
-        void TakeDamage(double damage)
-        {
-            Health -= damage;
-        }
 
     }
 }

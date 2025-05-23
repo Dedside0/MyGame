@@ -34,24 +34,21 @@ namespace MyGame.classes
             reloadTimer = new Stopwatch();
             reloadTimer.Start();
             X = x; Y = y;
+            Top = y;
+            Left = x;
             this.size = size;
             this.form = form;
 
-            this.Load(path);
-            this.Top = y;
-            this.Left = x;
-            this.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.BorderStyle = BorderStyle.None;
-            this.Width = size;
-            this.Height = size;
-            this.MouseClick += Sprite_MouseClick;
+            Load(path);
+            SizeMode = PictureBoxSizeMode.StretchImage;
+            Width = Height = size;
+            MouseClick += Sprite_MouseClick;
         }
 
         private void Sprite_MouseClick(object sender, MouseEventArgs e)
         {
             if (isReload)
             {
-
                 Point mouse = form.PointToClient(Cursor.Position);
                 Bullet bullet = new Bullet("data/pictures/wall1.jpg", form.player.X, form.player.Y, 30, form);
 
@@ -70,18 +67,8 @@ namespace MyGame.classes
         public virtual void DeleteSprite()
         {
             form.Controls.Remove(this);
-            this.Dispose();
+            Dispose();
         }
 
-        int CountOfBullets()
-        {
-            int cnt = 0;
-            foreach (var sprite in form.mapManager.CollisionSprites)
-            {
-                if (sprite is Bullet)
-                    cnt++;
-            }
-            return cnt;
-        }
     }
 }

@@ -15,8 +15,8 @@ namespace MyGame.classes
         public double Damage { get; }
         public Bullet(string path, int x, int y, int size, FormGame form) : base(path, x, y, size, form)
         {
-            Damage = 15;
-            speed = 5;
+            Damage = 20;
+            speed = 15;
             double dx = targetX - X;
             double dy = targetY - X;
             double angle = Math.Atan2(dy, dx);
@@ -25,10 +25,15 @@ namespace MyGame.classes
             this.vx = speed * Math.Cos(angle);
             this.vy = speed * Math.Sin(angle);
         }
-
-        public override void StopMove()
+        public override void StartMove(int targetX, int targetY)
         {
-            base.StopMove();
+            double dx = targetX - X;
+            double dy = targetY - Y;
+
+            double angle = Math.Atan2(dy,dx);
+            this.vx = speed*Math.Cos(angle);
+            this.vy=speed*Math.Sin(angle);
+            timer.Enabled = true;
         }
 
         protected override void Move()
