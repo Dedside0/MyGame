@@ -36,6 +36,7 @@ namespace MyGame
             FormSkin formSkin = new FormSkin();
             formSkin.ShowDialog();
             skinId = formSkin.SkinID;
+            formSkin.Dispose();         
         }
     }
 }

@@ -12,12 +12,9 @@ namespace MyGame.classes
     {
         string skinID;
         string rootPathofSkins = "data/pictures/players/";
-        Timer timer;
-        Label labelScore;
+        Timer timer; Label labelScore; ProgressBar HealthBar; MapManager mapManager;
         int score;
         double health = 100;
-        ProgressBar HealthBar;
-        int lvl = 1;
         int speed;
         public int Score
         {
@@ -31,7 +28,6 @@ namespace MyGame.classes
                 labelScore.Text = score.ToString();
             }
         }
-        MapManager mapManager;
         public double Health
         {
             get
@@ -42,7 +38,6 @@ namespace MyGame.classes
             {
                 if (value <= 0)
                 {
-
                     HealthBar.Value = 0;
                     mapManager.GameOver(this);
                 }

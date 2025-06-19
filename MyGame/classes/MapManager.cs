@@ -8,14 +8,31 @@ using System.Drawing;
 using System.IO;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 using System.Diagnostics;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+
 
 namespace MyGame.classes
 {
     public class MapManager
     {
+        Stopwatch reloadTimer = new Stopwatch();
+        public bool isReload
+        {
+            get
+            {
+                if (reloadTimer.ElapsedMilliseconds >= 500)
+                {
+                    reloadTimer.Restart();
+                    return true;
+                }
+                return false;
+            }
+        }
         public List<CollisionSprite> CollisionSprites;
         public List<CollisionSprite> KilledSprites;
         Sprite[,] tiles;
+        List<Record> records = new List<Record>();
 
         Random rand;
         FormGame form;
@@ -24,6 +41,13 @@ namespace MyGame.classes
 
         public MapManager(FormGame form)
         {
+            string json = File.ReadAllText("Records.json");
+            records = JsonConvert.DeserializeObject<List<Record>>(json);
+            if(records == null)
+                records = new List<Record>();
+
+            reloadTimer = new Stopwatch();
+            reloadTimer.Start();
             rand = new Random();
             KilledSprites = new List<CollisionSprite>();
             CollisionSprites = new List<CollisionSprite>();
@@ -54,7 +78,7 @@ namespace MyGame.classes
                     {
                         int x = j * tileSize;
                         int y = i * tileSize;
-                        if (j >= stroka.Length || stroka[j] == '*' || stroka[j]==' ')
+                        if (j >= stroka.Length || stroka[j] == '*' || stroka[j] == ' ')
                             tiles[i, j] = (new Sprite("data/pictures/floor1.jpg", x, y, tileSize, form));
                         else
                         {
@@ -99,14 +123,14 @@ namespace MyGame.classes
                 x = rand.Next(0, verticalTiles);
                 y = rand.Next(0, horizontalTiles);
             }
-            while (tiles[y,x] is CollisionSprite);
+            while (tiles[y, x] is CollisionSprite);
             int type = rand.Next(1, 3);
             Enemy summonSprite = new Enemy(type, x * tileSize, y * tileSize, 45, form);
             form.Controls.Add(summonSprite);
             form.Controls.SetChildIndex(summonSprite, 0);
-            summonSprite.StartMove(form.player.X,form.player.Y);
+            summonSprite.StartMove(form.player.X, form.player.Y);
         }
-        
+
 
         public Player SummonPlayer(string skinID)
         {
@@ -116,9 +140,9 @@ namespace MyGame.classes
                 x = rand.Next(0, verticalTiles);
                 y = rand.Next(0, horizontalTiles);
             }
-            while (tiles[y,x] is CollisionSprite);
+            while (tiles[y, x] is CollisionSprite);
 
-            Player player = new Player(skinID, x*tileSize, y*tileSize, 50, form);
+            Player player = new Player(skinID, x * tileSize, y * tileSize, 50, form);
             player.Show();
             form.Controls.Add(player);
             form.Controls.SetChildIndex(player, 0);
@@ -138,7 +162,35 @@ namespace MyGame.classes
 
         public void GameOver(Player player)
         {
-            player = null;
+            form.timerEnemySpawn.Stop();
+            player.DeleteSprite();
+            foreach (var item in CollisionSprites)
+            {
+                if (item is Enemy)
+                    KilledSprites.Add(item);
+            }
+            MessageBox.Show($"Вы проиграли, набрав {player.Score} очков");
+            FormAddRecord formAddRecord = new FormAddRecord();
+            formAddRecord.ShowDialog();
+            Record newRecord = new Record(formAddRecord.UserName, player.Score);
+            AddNewRecord(newRecord);
+
+            FormRecords formRecords = new FormRecords();
+            formRecords.ShowDialog();
+        }
+
+        void AddNewRecord(Record record)
+        {
+            for (int i = 0;i<records.Count;i++)
+            {
+                if (records[i].Score < record.Score)
+                {
+                    records.Insert(i,record);
+                    break;
+                }
+            }
+            string temp = JsonConvert.SerializeObject(records, Formatting.Indented);
+            File.WriteAllText("Records.json", temp);
         }
     }
 }

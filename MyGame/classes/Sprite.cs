@@ -11,19 +11,7 @@ namespace MyGame.classes
 {
     public class Sprite : PictureBox
     {
-        Stopwatch reloadTimer = new Stopwatch();
-        bool isReload
-        {
-            get
-            {
-                if(reloadTimer.ElapsedMilliseconds >= 500)
-                {
-                    reloadTimer.Restart();
-                    return true;
-                }
-                return false;
-            }
-        }
+        
         protected FormGame form;
         protected int size;
         public int X { get; set; }
@@ -31,8 +19,7 @@ namespace MyGame.classes
 
         public Sprite(string path, int x, int y, int size, FormGame form)
         {
-            reloadTimer = new Stopwatch();
-            reloadTimer.Start();
+            
             X = x; Y = y;
             Top = y;
             Left = x;
@@ -47,7 +34,7 @@ namespace MyGame.classes
 
         private void Sprite_MouseClick(object sender, MouseEventArgs e)
         {
-            if (isReload)
+            if (form.mapManager.isReload)
             {
                 Point mouse = form.PointToClient(Cursor.Position);
                 Bullet bullet = new Bullet("data/pictures/bullet1.jpg", form.player.X, form.player.Y, 30, form);

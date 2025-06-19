@@ -21,7 +21,7 @@ namespace MyGame.classes
             double dy = targetY - X;
             double angle = Math.Atan2(dy, dx);
 
-            // Присваиваем значения полям vx и vy
+            
             this.vx = speed * Math.Cos(angle);
             this.vy = speed * Math.Sin(angle);
         }
@@ -33,7 +33,7 @@ namespace MyGame.classes
             double angle = Math.Atan2(dy,dx);
             this.vx = speed*Math.Cos(angle);
             this.vy=speed*Math.Sin(angle);
-            timer.Enabled = true;
+            moveTimer.Enabled = true;
         }
 
         protected override void Move()

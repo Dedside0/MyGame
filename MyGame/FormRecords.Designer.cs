@@ -1,6 +1,6 @@
 ﻿namespace MyGame
 {
-    partial class FormGame
+    partial class FormRecords
     {
         /// <summary>
         /// Required designer variable.
@@ -28,23 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.listBoxRecords = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
-            // FormGame
+            // listBoxRecords
+            // 
+            this.listBoxRecords.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.listBoxRecords.FormattingEnabled = true;
+            this.listBoxRecords.ItemHeight = 20;
+            this.listBoxRecords.Location = new System.Drawing.Point(22, 12);
+            this.listBoxRecords.Name = "listBoxRecords";
+            this.listBoxRecords.Size = new System.Drawing.Size(756, 404);
+            this.listBoxRecords.TabIndex = 0;
+            // 
+            // FormRecords
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(836, 411);
-            this.Name = "FormGame";
-            this.Text = "Игра";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormGame_FormClosing);
-            this.Load += new System.EventHandler(this.FormGame_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormGame_KeyDown);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FormGame_KeyUp);
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.listBoxRecords);
+            this.Name = "FormRecords";
+            this.Text = "Records";
+            this.Load += new System.EventHandler(this.Records_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.ListBox listBoxRecords;
     }
 }

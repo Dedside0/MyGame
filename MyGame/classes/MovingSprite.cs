@@ -13,15 +13,15 @@ namespace MyGame.classes
     {
         protected double speed = 5;
         protected double vx, vy;
-        protected Timer timer;
+        protected Timer moveTimer;
         protected int targetX, targetY;
         
 
         public MovingSprite(string path, int x, int y, int size, FormGame form) : base(path, x, y, size, form)
         {
-            timer = new Timer();
-            timer.Interval = 16;
-            timer.Tick += MoveTimer_Tick;
+            moveTimer = new Timer();
+            moveTimer.Interval = 16;
+            moveTimer.Tick += MoveTimer_Tick;
         }
 
         
@@ -30,11 +30,11 @@ namespace MyGame.classes
         {
             this.targetX = targetX;
             this.targetY = targetY;
-            timer.Enabled = true;
+            moveTimer.Enabled = true;
         }
         public virtual void StopMove()
         {
-            timer.Enabled = false ;
+            moveTimer.Enabled = false ;
         }
 
         private void MoveTimer_Tick(object sender, EventArgs e)

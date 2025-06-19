@@ -18,6 +18,7 @@ namespace MyGame
         public MapManager mapManager;
         Form formMenu;
         Random rand;
+        public Timer timerEnemySpawn;
 
         public FormGame()
         {
@@ -35,7 +36,10 @@ namespace MyGame
 
         private void FormGame_Load(object sender, EventArgs e)
         {   
-            
+            timerEnemySpawn = new Timer();
+            timerEnemySpawn.Interval = 500;
+            timerEnemySpawn.Tick += timerEnemySpawn_Tick;
+            timerEnemySpawn.Start();
             rand = new Random();
             mapManager = new MapManager(this);
             this.BackColor = Color.Black;
